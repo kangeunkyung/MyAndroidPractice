@@ -18,11 +18,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initView();
+
+        setFragment(MenuOneFragment.newInstance());
+
+    }
+
+    public void initView() {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 Fragment currentFragment = null;
+
                 switch(item.getItemId()) {
                     case R.id.menu_one:
                         Toast.makeText(MainActivity.this, "menu one", Toast.LENGTH_SHORT).show();
@@ -40,14 +49,23 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, currentFragment);
-                transaction.commit();
+                setFragment(currentFragment);
+
 
                 return true;
             }
-        });
 
+        });
+    }
+
+
+    public void setFragment(Fragment fragment){
+
+        // todo fragment 인터페이스 만들어서 해보기
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.commitAllowingStateLoss();
 
     }
 }
