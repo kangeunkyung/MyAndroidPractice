@@ -9,10 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- meta-data에서 설정한 값은 앱이 background일 때 적용됨.
+             알림 메세지가 작업 표시줄에 표시될 때 상단의 아이콘과 텍스트 색상을 설정 -->
         <!-- fcm default icon -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification"></meta-data>
+            android:resource="@mipmap/ic_launcher_round"></meta-data>
         <!-- fcm default color -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"

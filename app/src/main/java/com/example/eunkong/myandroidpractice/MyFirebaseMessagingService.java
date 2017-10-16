@@ -28,6 +28,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public MyFirebaseMessagingService() {
         Log.d(TAG, "MyFirebaseMessagingService()");
     }
+
+    /**
+     * 앱이 foreground인 경우 알림과 데이터 메시지가 여기서 처리됨
+     * 앱이 background인 경우 데이터 메시지(키-값 쌍으로 이루어져 있음) 가 여기서 처리됨
+     * 데이터 메시지는 인텐트 부가정보로 전송됨
+     * @param remoteMessage
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -80,6 +87,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
+        // 앱이 foreground로 들어온 게 아닌 경우 notification의 제목과 내용 설정
+        // 다음은 firebase console로 보낼 경우를 기준으로 처리함
         if(TextUtils.isEmpty(title)) {
             title = getString(R.string.app_name);
 
@@ -89,16 +98,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        // 앱이 foreground인 경우 알림 메세지 처리하는 부분
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle(title)
                 .setContentText(message)
+                .setColor(0xff0000)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(0, notificationBuilder.build());
 
 
